@@ -5,17 +5,16 @@ from ship import Ship
 
 class AlienInvasion:
   """Overall class to manage game assets and behavior. """
-
+  # method = function 
+  # except methods belong to classes and get called from class instances
   def __init__(self):
     """Init the game, and create resource"""
     pygame.init()  
 
     self.settings = Settings()
-
-    self.screen = pygame.display.set_mode(
-    (self.settings.screen_width, self.settings.screen_height))
-
-    self.screen = pygame.display.set_mode((1200, 800))
+    self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+    self.settings.screen_width = self.screen.get_rect().width
+    self.settings.screen_height = self.screen.get_rect().height
     pygame.display.set_caption("Alien Invasion")
 
     self.ship = Ship(self)
@@ -30,27 +29,34 @@ class AlienInvasion:
       self.ship.update()
       self._update_screen()
       #  Watch for keyboard and mouse events.
+  
+  def _check_keydown_events(self, event):
+    """Respond to keypresses."""
+    if event.key == pygame.K_RIGHT:
+      self.ship.moving_right = True
+    elif event.key == pygame.K_LEFT:
+      self.ship.moving_left = True
+    elif event.key == pygame.K_q:
+      sys.exit()
+        
   def _check_events(self):
     """Respond to keypresses and mouse events."""
     for event in pygame.event.get():
       # print(event.type)
       if event.type == pygame.QUIT:
-        # print(f"quit = {pygame.QUIT}")
-          sys.exit()
+        sys.exit()
       elif event.type == pygame.KEYDOWN:
-          # print(f"key down = {pygame.KEYDOWN}")
-        if event.key == pygame.K_RIGHT:
-          # print(f"right = {pygame.K_RIGHT}")
-          self.ship.moving_right = True
-        elif event.key == pygame.K_LEFT:
-          self.ship.moving_left = True
+        self._check_keydown_events(event)
       elif event.type == pygame.KEYUP:
-        if event.key == pygame.K_RIGHT:
-          self.ship.moving_right = False
-        elif event.key == pygame.K_LEFT:
-          self.ship.moving_left = False
-          # Move the ship to the right.
-          self.ship.rect.x += 1
+        self._check_keyup_events(event)
+
+  def _check_keyup_events(self, event):
+    """Respond to key releases."""
+    if event.key == pygame.K_RIGHT:
+      self.ship.moving_right = False
+    elif event.key == pygame.K_LEFT:
+      self.ship.moving_left = False
+
   def _update_screen(self):
     """Update images on the screen, and flip to the new screen."""
     # Redraw the screen during each pass through the loop.
@@ -64,3 +70,25 @@ if __name__ == '__main__':
     #  Make a game instance, and run the game.
     ai = AlienInvasion()
     ai.run_game()
+
+# procedural (todo list)
+# step by step
+# top of file to bottom the computer runs line by line
+# myList = [1,2,3,3]
+# for item in myList:
+#   print(item)
+# functional
+# similar to procedural
+# you will divide procedures in to blocks of code in functions and then call the functions
+# def printList(l = []):
+#   for item in l:
+#     print(item)
+
+# def printListModified(l = []):
+#   for item in l:
+#     print(f"here is an item {item}")
+# object oriented
+# mystr = "slkdjflskdf"
+# mystr.title()
+# mystr.tolower()
+# python string methods
