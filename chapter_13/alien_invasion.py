@@ -12,6 +12,7 @@ class AlienInvasion:
   def __init__(self):
     """Init the game, and create resource"""
     pygame.init()  
+
     self.settings = Settings()
     self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
     self.settings.screen_width = self.screen.get_rect().width
@@ -31,10 +32,21 @@ class AlienInvasion:
     while True:
       self._check_events()
       self.ship.update()
-      self.bullets.update()
+      self._update_bullets()
       self._update_screen()
       #  Watch for keyboard and mouse events.
-      
+  
+  def _check_keydown_events(self, event):
+    """Respond to keypresses."""
+    if event.key == pygame.K_RIGHT:
+      self.ship.moving_right = True
+    elif event.key == pygame.K_LEFT:
+      self.ship.moving_left = True
+    elif event.key == pygame.K_q:
+      sys.exit()
+    elif event.key == pygame.K_SPACE:
+      self._fire_bullet()
+        
   def _check_events(self):
     """Respond to keypresses and mouse events."""
     for event in pygame.event.get():
@@ -44,18 +56,7 @@ class AlienInvasion:
       elif event.type == pygame.KEYDOWN:
         self._check_keydown_events(event)
       elif event.type == pygame.KEYUP:
-        self._check_keyup_events(event) 
-  
-    def _check_keydown_events(self, event):
-      """Respond to keypresses."""
-      if event.key == pygame.K_RIGHT:
-        self.ship.moving_right = True
-      elif event.key == pygame.K_LEFT:
-        self.ship.moving_left = True
-      elif event.key == pygame.K_q:
-        sys.exit()
-      elif event.key == pygame.K_SPACE:
-        self._fire_bullet()
+        self._check_keyup_events(event)
 
   def _check_keyup_events(self, event):
     """Respond to key releases."""
@@ -71,7 +72,7 @@ class AlienInvasion:
       self.bullets.add(new_bullet)
 
   def _update_bullets(self):
-    """Update position of bullets and get rid of old bulets."""
+    """Update position of bullets and get rif of old bulets."""
     # Update bullet positions.
     self.bullets.update()
 
@@ -82,21 +83,11 @@ class AlienInvasion:
 
   def _create_fleet(self):
     """Create the fleet of aliens."""
-    # Create an alien and find the number of aliens in a row.
-    # Spacing between each alien is equal to one alien width.
+    # Make an alien.
     alien = Alien(self)
-    alien_width = alien.rect.width
-    available_space_x = self.settings.screen_width - (2 * alien_width)
-    number_aliens_x = available_space_x // (2 * alien_width)
+    self.aliens.add(alien)
 
-    # Create the first row of aliens.
-    for alien_number in range(number_aliens_x):
-      # Create an alien and place it in a row.
-      alien = Alien(self)
-      alien.x = alien_width + 2 * alien_width * alien_number
-      alien.rect.x = alien.x
-      self.aliens.add(alien)
-   
+
 
   def _update_screen(self):
     """Update images on the screen, and flip to the new screen."""
