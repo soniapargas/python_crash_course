@@ -1,3 +1,7 @@
 .DS_STORE
 pcc_2e
 __pycache__
+.eggs
+build
+dist
+env
