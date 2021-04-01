@@ -15,7 +15,7 @@ class AlienInvasion:
   # except methods belong to classes and get called from class instances
   def __init__(self):
     """Init the game, and create resource"""
-    pygame.init()  
+    pygame.init()
     self.settings = Settings()
     # self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
     self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
@@ -29,13 +29,11 @@ class AlienInvasion:
     self.ship = Ship(self)
     self.bullets = pygame.sprite.Group()
     self.aliens = pygame.sprite.Group()
-    self._create_fleet()
 
-    # Make the Play button.
+    self._create_fleet() 
+
+    #Make the pay button 
     self.play_button = Button(self, "Play")
-
-    # Set the background color.
-    self.bg_color = (230, 230, 230)
 
   def run_game(self):
     """Start the main loop for the game."""
@@ -46,7 +44,8 @@ class AlienInvasion:
         self.ship.update()
         self._update_bullets()
         self._update_aliens()
-        self._update_screen()
+      
+      self._update_screen()
       #  Watch for keyboard and mouse events.
       
   def _check_events(self):
