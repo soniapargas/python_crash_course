@@ -17,7 +17,8 @@ class AlienInvasion:
     """Init the game, and create resource"""
     pygame.init()  
     self.settings = Settings()
-    self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+    # self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+    self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
     self.settings.screen_width = self.screen.get_rect().width
     self.settings.screen_height = self.screen.get_rect().height
     pygame.display.set_caption("Alien Invasion")
@@ -189,7 +190,7 @@ class AlienInvasion:
     self.sb.show_score()
 
     # Draw the play button if the game is inactive.
-    if not self.stats.game_inactive:
+    if not self.stats.game_active:
       self.play_button.draw_button()
 
     # Make the most recently drawn screen visible.
